@@ -1,0 +1,23 @@
+version: "3.4"
+services:
+  db:
+    container_name: db
+    image: mongo:4.2.6
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - ./dbdata:/data/db
+  server:
+    container_name: server
+    build:
+      context: ./packages/server
+      target: development
+      args:
+        - NODE_ENV=development
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./packages/server:/app
+      - /app/node_modules
+    depends_on:
+      - db
