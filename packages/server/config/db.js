@@ -1,3 +1,4 @@
 export default {
-  uri: 'mongodb://localhost:27017',
+  uri: process.env.MONGO_URI || 'mongodb://db:27017',
+  dbName: process.env.MONGO_DB_NAME || 'tictactoe',
 };

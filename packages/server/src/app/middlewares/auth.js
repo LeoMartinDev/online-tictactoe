@@ -13,7 +13,7 @@ export const authMiddleware = (instance) => async (request, response) => {
   let decodedToken;
 
   try {
-    decodedToken = verifyToken(token);
+    decodedToken = instance.jwt.verify(token);
   } catch (error) {
     throw new instance.httpErrors.unauthorized('Invalid token');
   }

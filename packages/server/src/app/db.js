@@ -17,7 +17,7 @@ export default plugin(async (instance, config) => {
 
   instance
     .decorate('db', mongoose.connection)
-    .addHook('onClose', (_instance_, next) => {
+    .addHook('onClose', (_instance, next) => {
       mongoose.connection.close(next);
     });
 
