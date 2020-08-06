@@ -27,7 +27,7 @@ export const authMiddleware = (instance) => async (request, response) => {
   req.userId = user._id;
 };
 
-export default plugin(async (instance, options) => {
+export default plugin(async (instance) => {
   instance.decorateRequest('userId', '');
   instance.addHook('onRequest', authMiddleware);
 });

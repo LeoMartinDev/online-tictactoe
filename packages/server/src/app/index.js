@@ -3,6 +3,7 @@ import fastifySensible from 'fastify-sensible';
 import fastifyJwt from 'fastify-jwt';
 
 import db from './db.js';
+
 import routes from './routes.js';
 import publicRoutes from './routes.public.js';
 
@@ -22,8 +23,6 @@ export default (config) => {
   });
 
   app.register(publicRoutes, { prefix: '/api' });
-
-  app.register(routes, { prefix: '/api' });
 
   return app;
 };

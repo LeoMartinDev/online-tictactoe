@@ -1,26 +1,14 @@
-export const registerRouteBodySchema = {
-  type: 'object',
-  required: ['email', 'username', 'password'],
-  properties: {
-    email: {
-      type: 'email',
-    },
-    username: {
-      type: 'string',
-      minLength: 5,
-      maxLenght: 20,
-    },
-    password: {
-      type: 'string',
-    },
-  },
-};
+import S from 'fluent-schema';
+
+import { responseSchemas } from '../core/schemas.js';
+
+export const registerRouteBodySchema = S.object()
+  .prop('email', S.string().format(S.FORMATS.EMAIL).required())
+  .prop('username', S.string().minLength(5).maxLength(20).required())
+  .prop('password', S.string().required());
 
 export const registerRouteResponseSchemas = {
-  200: {
-    type: 'object',
-    properties: {
-      email: { type: 'email' },
-    },
-  },
+  200: S.object()
+    .prop('email', S.string().format(S.FORMATS.EMAIL).required()),
+  ...responseSchemas,
 };

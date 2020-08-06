@@ -4,4 +4,4 @@ import {
 
 export default async (instance) => {
   instance.route(registerRoute(instance));
-}
+};
