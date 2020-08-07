@@ -14,6 +14,8 @@ export default (config) => {
     logger: true,
   });
 
+  app.decorate('config', config);
+
   app.register(fastifySensible);
 
   app.register(db, config.db);
@@ -23,6 +25,10 @@ export default (config) => {
   });
 
   app.register(publicRoutes, { prefix: '/api' });
+  app.register(routes, { prefix: '/api' });
+  app.all('*', async () => {
+    throw app.httpErrors.notFound();
+  });
 
   return app;
 };

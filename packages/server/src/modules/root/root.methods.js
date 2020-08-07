@@ -6,10 +6,13 @@ import User from '../../models/User.js';
 import {
   registerRouteBodySchema,
   registerRouteResponseSchemas,
+  loginRouteBodySchema,
+  loginRouteResponseSchemas,
 } from './root.dto.js';
 
 export {
   registerRoute,
+  loginRoute,
 };
 
 function registerRoute() {
@@ -48,6 +51,40 @@ function registerRoute() {
   
       return {
         email: user.email,
+      };
+    },
+  };
+};
+
+function loginRoute(instance) {
+  return {
+    method: 'POST',
+    path: '/login',
+    schema: {
+      body: loginRouteBodySchema,
+      response: loginRouteResponseSchemas,
+    },
+    handler: async (request, response) => {
+      const { email, password } = request.body;
+
+      const userFromEmail = await User.findOne({ email });
+
+      if (!userFromEmail) {
+        throw new instance.httpErrors.unauthorized();
+      }
+
+      try {
+        await bcrypt.compare(password, userFromEmail.hashedPassword);
+      } catch (error) {
+        throw new instance.httpErrors.unauthorized();
+      }
+
+      const accessToken = await response.jwtSign({ userId: userFromEmail._id }, {
+        expiresIn: instance.config.app.accessTokenExpiry,
+      });
+
+      return {
+        accessToken,
       };
     },
   };
